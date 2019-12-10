@@ -1,0 +1,108 @@
+<div class="container-fluid" style="padding: 0;">
+    <div class="row">
+        <div class="col-md-12">
+            <mat-toolbar color="primary">
+                <h3 class="lato-font">Post Editor</h3>
+                <div class="spacer"></div>
+                <button 
+                    class="lato-font" 
+                    mat-flat-button 
+                    matTooltip="Save post draft to publish later"
+                    color="primary" 
+                    (click)="saveDraft()"
+                >
+                    Save Draft
+                </button>
+                <button 
+                    class="lato-font" 
+                    mat-flat-button 
+                    matTooltip="Publish the post"
+                    color="primary" 
+                    (click)="publishPost()"
+                >
+                    Publish
+                </button>
+            </mat-toolbar>
+        </div>
+    </div>
+</div>
+
+<div class="container-fluid mt-5" style="padding: 2rem;">
+    <div class="row">
+        <div class="col-md-8">
+            <mat-form-field class="w-100">
+                <textarea 
+                    matInput
+                    class="lato-font post-title"
+                    cdkTextareaAutosize
+                    #autosize="cdkTextareaAutosize"
+                    cdkAutosizeMinRows="1"
+                    cdkAutosizeMaxRows="3"
+                    placeholder="Post Title" 
+                    [(ngModel)]="postTitle">
+                </textarea>
+            </mat-form-field>
+            <ckeditor 
+                class="w-100 lato-font" 
+                [editor]="editor" 
+                [(ngModel)]="postContent"
+                [config]="editorConfig">
+            </ckeditor>
+        </div>
+
+        <div class="col-md-4">
+            <mat-card class="w-100">
+                <h4 class="lato-font">Post Settings</h4>
+                <br>
+                <mat-card-content>
+                    <h5 class="lato-font">Banner Image</h5>
+                    <div class="banner-image-container w-100">
+                        <mat-form-field class="w-100">
+                            <input class="lato-font" [readOnly]="!updatingBannerImage" type="url" matInput placeholder="Banner Image URL" [(ngModel)]="bannerImageURL">
+                            <mat-icon style="margin: 0.5em; cursor: pointer;" *ngIf="bannerImageURL !== ''" matSuffix (click)="updatingBannerImage = !updatingBannerImage">mode_edit</mat-icon>
+                        </mat-form-field>
+                        <img *ngIf="bannerImageURL !== ''" class="w-100" [src]="bannerImageURL">
+                    </div>
+
+                    <br>
+
+                    <h5 class="lato-font">Post Tags</h5>
+                    <mat-form-field class="w-100">
+                        <mat-chip-list #tagList aria-label="Post Tags">
+                          <mat-chip 
+                            *ngFor="let tag of postTags" 
+                            color="accent"
+                            selected
+                            [removable]="removable" 
+                            (removed)="removeTag(tag)"
+                          >
+                            {{ tag }}
+                            <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                          </mat-chip>
+
+                          <input 
+                            placeholder="Add Tag..."
+                            [matChipInputFor]="tagList"
+                            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                            [matChipInputAddOnBlur]="addOnBlur"
+                            (matChipInputTokenEnd)="addTag($event)"
+                          >
+                        </mat-chip-list>
+                    </mat-form-field>
+
+                    <br>
+                    
+                    <h5 class="lato-font">Post Excerpt</h5>
+                    <mat-form-field class="w-100">
+                        <textarea 
+                            matInput 
+                            rows="4"
+                            class="lato-text"
+                            placeholder="Enter post excerpt..."
+                        ></textarea>
+                    </mat-form-field>
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

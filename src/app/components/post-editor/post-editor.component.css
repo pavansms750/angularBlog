@@ -1,0 +1,12 @@
+.spacer {
+    flex: 1 1 auto;
+}
+
+.post-title {
+    font-size: 2.5rem;
+    text-align: center;
+}
+
+button {
+    outline: none;
+}
